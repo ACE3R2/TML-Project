@@ -34,6 +34,7 @@ small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(10
 model = GPT2ForSequenceClassification.from_pretrained("gpt2", num_labels=3)
 # From previous trained
 # model = GPT2ForSequenceClassification.from_pretrained("/content/drive/My Drive/LLM_GPT2/initial_attempt_model")
+# model = GPT2ForSequenceClassification.from_pretrained("/content/drive/My Drive/LLM_GPT2/initial_attempt/checkpoint-1500")
 
 
 metric = evaluate.load("accuracy")
@@ -46,11 +47,14 @@ def compute_metrics(eval_pred):
 
 # Arguments for training
 training_args = TrainingArguments(
+   # Checkpoint save location
    output_dir="/content/drive/My Drive/LLM_GPT2/initial_attempt",
-   evaluation_strategy="epoch",
+   # Rate of running validation
+   evaluation_strategy="steps",
    eval_steps=500,
    per_device_train_batch_size=1,
    per_device_eval_batch_size=1,
+   # Number of steps of accumulating gradients before running backpropagation and updating location
    gradient_accumulation_steps=4,
    num_train_epochs=4
 )
