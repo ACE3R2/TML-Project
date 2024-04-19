@@ -275,21 +275,6 @@ class CustomTrainer(Trainer):
 
 # -------------------------------------------------------
 
-class CustomTrainer(Trainer):
-  def compute_loss(self, model, inputs, return_outputs=False):
-    labels = inputs.pop("labels")
-    outputs = model(**inputs)
-
-    #print(labels)
-    #print(outputs.logits)
-
-    kl_loss = torch.nn.KLDivLoss()
-    loss = kl_loss(outputs.logits, labels)
-
-    return (loss, outputs) if return_outputs else loss
-
-# -------------------------------------------------------
-
 training_args = TrainingArguments(
    output_dir="temp",
    per_device_train_batch_size=1,  # Reduce batch size here
